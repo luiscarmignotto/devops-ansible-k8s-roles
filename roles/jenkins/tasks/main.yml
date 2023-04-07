@@ -1,0 +1,9 @@
+- name: Setting Facts
+  set_fact:
+    jenkins_helm_config: "{{ solution.devops.jenkins }}"
+
+- name: Deploying Jenkins 
+  include_role:
+    name: helm-install
+  vars:
+    service_helm_config: "{{ jenkins_helm_config }}"

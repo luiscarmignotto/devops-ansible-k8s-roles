@@ -1,0 +1,35 @@
+- name: Setting Facts
+  set_fact:
+    service_templates_dir: "{{ ansible_k8s_buils_repo }}/services/{{ service_config.name }}"
+
+- name: Creating TempDir
+  tempfile:
+    state: directory
+    suffix: template
+  register: temp_dir
+
+- name: Templating Deploy Files
+  template:
+    src: "{{ item }}"
+    dest: "{{ temp_dir.path }}/{{ item | basename | replace('.j2', '')}}"
+  with_fileglob: "{{ service_templates_dir }}/*.j2"
+
+- name: Checking Namespace
+  kubernetes.core.k8s:
+    name: "{{ service_config.namespace }}"
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Create k8s Resources
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ item }}"
+  with_fileglob: "{{ temp_dir.path }}/*.yml"
+
+- name: Deleting TempDir
+  file:
+    state: absent
+    path: "{{ temp_dir.path }}"
+
+

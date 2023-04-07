@@ -1,0 +1,9 @@
+- name: Setting Facts
+  set_fact:
+    docker_registry_helm_config: "{{ solution.devops.docker_registry }}"
+
+- name: Deploying docker_registry 
+  include_role:
+    name: helm-install
+  vars:
+    service_helm_config: "{{ docker_registry_helm_config }}"

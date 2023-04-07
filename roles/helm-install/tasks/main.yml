@@ -1,0 +1,16 @@
+- name: Checking Namespace
+  kubernetes.core.k8s:
+    name: "{{ service_helm_config.namespace }}"
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Deploy Helm Chart
+  kubernetes.core.helm:
+    name: "{{ service_helm_config.name }}"
+    chart_repo_url: "{{ service_helm_config.repourl }}"
+    release_namespace: "{{ service_helm_config.namespace }}"
+    chart_ref: "{{ service_helm_config.chart_ref }}"
+    chart_version: "{{ service_helm_config.chart_version }}"
+    values_files:
+      - "{{ ansible_k8s_buils_repo }}/services/{{ service_helm_config.name }}/templates/values.yml"
