@@ -1,0 +1,9 @@
+- name: Setting Facts
+  set_fact:
+    fipewatcher-backend_config: "{{ solution.application.fipewatcher-backend }}"
+
+- name: Deploying Fipewatcher-Backend 
+  include_role:
+    name: kube-install
+  vars:
+    service_config: "{{ fipewatcher-backend_config }}"
