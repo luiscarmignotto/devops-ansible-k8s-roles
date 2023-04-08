@@ -1,6 +1,6 @@
 - name: Setting Facts
   set_fact:
-    fipewatcher-backend_config: "{{ solution.application.fipewatcher-backend }}"
+    fipewatcher-backend_config: "{{ solution.application.fipewatcher_backend }}"
 
 - name: Deploying Fipewatcher-Backend 
   include_role:
